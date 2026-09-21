@@ -1,1 +1,1 @@
-//
+// قالی مپ directory entrypoint.

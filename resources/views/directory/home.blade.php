@@ -1,0 +1,3 @@
+@extends('layouts.app')
+@section('title','قالی مپ | دایرکتوری قالیشویی‌های ایران')
+@section('content')<section class="hero"><div class="container"><p class="eyebrow">دایرکتوری قالیشویی‌های ایران</p><h1>قالیشویی نزدیک خودت را پیدا کن</h1><p class="lead">استان، شهر و محله را انتخاب کن تا قالیشویی‌های همان محدوده را ببینی.</p></div></section><section class="container section"><div class="section-heading"><h2>استان‌های ایران</h2><span>{{ $provinces->count() }} استان</span></div><div class="card-grid">@foreach($provinces as $province)<a class="location-card" href="{{ route('province.show',$province->slug) }}"><strong>{{ $province->name }}</strong><span>{{ $province->cities_count }} شهر</span></a>@endforeach</div></section>@endsection

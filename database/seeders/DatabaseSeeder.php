@@ -1,25 +1,4 @@
 <?php
-
 namespace Database\Seeders;
-
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-
-class DatabaseSeeder extends Seeder
-{
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
-    {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-    }
-}
+use App\Models\CarpetCleaning;use App\Models\City;use App\Models\Location;use App\Models\Province;use Illuminate\Database\Seeder;
+class DatabaseSeeder extends Seeder{public function run():void{$data=['تهران'=>['tehran'=>['name'=>'تهران','locations'=>[['name'=>'شرق تهران','slug'=>'east-tehran','type'=>'direction'],['name'=>'غرب تهران','slug'=>'west-tehran','type'=>'direction'],['name'=>'شهرک غرب','slug'=>'shahrak-gharb','type'=>'neighborhood'],['name'=>'ونک','slug'=>'vanak','type'=>'neighborhood'],['name'=>'منطقه ۵','slug'=>'district-5','type'=>'district']],'cleanings'=>[['name'=>'قالیشویی نمونه تهران','slug'=>'nemuneh-tehran','phone'=>'02100000000','address'=>'تهران، محدوده مرکزی','description'=>'نمونه داده برای شروع دایرکتوری.'],['name'=>'قالیشویی پارس','slug'=>'pars-tehran','phone'=>'02111111111','address'=>'تهران، خیابان نمونه']]],'rey'=>['name'=>'ری','locations'=>[['name'=>'شهرری','slug'=>'shahr-rey','type'=>'neighborhood']],'cleanings'=>[['name'=>'قالیشویی ری','slug'=>'carpet-rey','phone'=>'02122222222','address'=>'شهرری']]],'shemiranat'=>['name'=>'شمیرانات','locations'=>[['name'=>'لواسان','slug'=>'lavasan','type'=>'area']],'cleanings'=>[['name'=>'قالیشویی شمیرانات','slug'=>'carpet-shemiranat','phone'=>'02133333333','address'=>'شمیرانات']]]],'اصفهان'=>['isfahan'=>['name'=>'اصفهان','locations'=>[['name'=>'مرکز شهر','slug'=>'central-isfahan','type'=>'area'],['name'=>'شمال اصفهان','slug'=>'north-isfahan','type'=>'direction']],'cleanings'=>[['name'=>'قالیشویی اصفهان','slug'=>'carpet-isfahan','phone'=>'03100000000','address'=>'اصفهان']]]],'خراسان رضوی'=>['mashhad'=>['name'=>'مشهد','locations'=>[['name'=>'احمدآباد','slug'=>'ahmadabad','type'=>'neighborhood'],['name'=>'سجاد','slug'=>'sajad','type'=>'neighborhood']],'cleanings'=>[['name'=>'قالیشویی مشهد','slug'=>'carpet-mashhad','phone'=>'05100000000','address'=>'مشهد']]]]];foreach($data as $provinceName=>$cities){$province=Province::updateOrCreate(['slug'=>str()->slug($provinceName)],['name'=>$provinceName]);foreach($cities as $citySlug=>$cityData){$city=City::updateOrCreate(['province_id'=>$province->id,'slug'=>$citySlug],['name'=>$cityData['name']]);foreach($cityData['locations'] as $locationData){Location::updateOrCreate(['city_id'=>$city->id,'slug'=>$locationData['slug']],$locationData);}foreach($cityData['cleanings'] as $cleaningData){$cleaning=CarpetCleaning::updateOrCreate(['city_id'=>$city->id,'slug'=>$cleaningData['slug']],$cleaningData);$cleaning->locations()->sync(Location::where('city_id',$city->id)->pluck('id'));}}}}}
